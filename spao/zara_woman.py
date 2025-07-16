@@ -65,6 +65,7 @@ async def get_product_detail(context, url, thumbnail_url):
                 subtitles = await materials_section.query_selector_all('div.structured-component-text-block-subtitle span')
                 paragraphs = await materials_section.query_selector_all('div.structured-component-text-block-paragraph span')
 
+
                 for subtitle, paragraph in zip(subtitles, paragraphs):
                     raw_key = (await subtitle.inner_text()).strip()
                     for word in ["혼용률", "소재", "주요소재"]:

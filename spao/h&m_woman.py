@@ -7,6 +7,7 @@ from playwright.async_api import async_playwright
 
 from libs.spao.hm_woman_category import hm_woman_category
 
+
 nest_asyncio.apply()
 
 async def get_product_detail(context, url):

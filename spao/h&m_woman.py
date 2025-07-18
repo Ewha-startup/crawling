@@ -175,28 +175,39 @@ def save_to_csv(data):
     with open(filename, mode='w', newline='', encoding='utf-8-sig') as file:
         writer = csv.writer(file)
         writer.writerow([
-            "product_name", "current_price", "regular_price", "discount_rate",
-            "color", "color_chip", "material", "details", "reviews", "rating",
-            "front_images_url", "color_classification_url", "product_detail_url", "category"
+            "category",
+            "product_name",
+            "current_price",
+            "regular_price",
+            "discount_rate",
+            "color",
+            "color_chip",
+            "material",
+            "details",
+            "reviews",
+            "rating",
+            "front_images_url",
+            "color_classification_url",
+            "product_detail_url"
         ])
 
         for item in data:
             detail_str = "; ".join([f"{k}: {v}" for k, v in item["details"].items()])
             writer.writerow([
-                f'category: {item["category"]}',
-                f'product_name: {item["product_name"]}',
-                f'current_price: {item["current_price"]}',
-                f'regular_price: {item["regular_price"]}',
-                f'discount_rate: {item["discount_rate"]}',
-                f'color: {item["color"]}',
-                f'color_chip: {item["color_chip"]}',
-                f'material: {item["material"]}',
-                f'details: {detail_str}',
-                f'reviews: {item["reviews"]}',
-                f'rating: {item["rating"]}',
-                f'front_images_url: {item["front_images_url"]}',
-                f'color_classification_url: {item["color_classification_url"]}',
-                f'product_detail_url: {item["product_detail_url"]}'
+                item["category"],
+                item["product_name"],
+                item["current_price"],
+                item["regular_price"],
+                item["discount_rate"],
+                item["color"],
+                item["color_chip"],
+                item["material"],
+                detail_str,
+                item["reviews"],
+                item["rating"],
+                item["front_images_url"],
+                item["color_classification_url"],
+                item["product_detail_url"]
             ])
     return filename
 

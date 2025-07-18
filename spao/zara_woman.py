@@ -12,7 +12,6 @@ def extract_rgb(style_str):
     match = re.search(r"rgb\([^)]+\)", style_str)
     return match.group(0) if match else ""
 
-# ✅ 상세페이지 크롤링
 async def get_product_detail(context, url, thumbnail_url):
     try:
         page = await context.new_page()
@@ -28,7 +27,6 @@ async def get_product_detail(context, url, thumbnail_url):
         regular_price = await safe_text(await page.query_selector('span[data-qa-qualifier="price-amount-old"] span.money-amount__main'))
         discount_rate = await safe_text(await page.query_selector('span[data-qa-qualifier="price-discount-percentage"]'))
 
-        # ✅ 색상 텍스트
         color = ""
         color_el = await page.query_selector('p[data-qa-qualifier="product-detail-info-color"]')
         if color_el:
@@ -49,7 +47,6 @@ async def get_product_detail(context, url, thumbnail_url):
         except:
             pass
 
-        # ✅ 소재 정보
         material = ""
         try:
             detail_btn = await page.query_selector('button[data-qa-action="show-extra-detail"]')
@@ -82,7 +79,6 @@ async def get_product_detail(context, url, thumbnail_url):
         except:
             pass
 
-        # ✅ 상세 설명
         details = ""
         try:
             p_el = await page.query_selector("div.expandable-text__inner-content p")
@@ -91,7 +87,6 @@ async def get_product_detail(context, url, thumbnail_url):
         except:
             pass
 
-        # ✅ 대표 이미지
         front_image_url = ""
         try:
             img_el = await page.query_selector('div.product-detail-view__main-image-wrapper img.media-image__image')
@@ -124,7 +119,6 @@ async def get_product_detail(context, url, thumbnail_url):
             "front_images_url": "", "product_detail_url": url
         }
 
-# ✅ 목록에서 썸네일과 링크 수집
 async def collect_product_links(page):
     await page.wait_for_timeout(1500)
     await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
@@ -145,7 +139,6 @@ async def collect_product_links(page):
 
     return products
 
-# ✅ CSV 저장
 def save_to_csv(data):
     date_str = datetime.now().strftime("%y%m%d")
     filename = f"zara_woman_{date_str}.csv"
@@ -158,22 +151,21 @@ def save_to_csv(data):
         ])
         for item in data:
             writer.writerow([
-                f'category: {item["category"]}',
-                f'product_name: {item["product_name"]}',
-                f'current_price: {item["current_price"]}',
-                f'regular_price: {item["regular_price"]}',
-                f'discount_rate: {item["discount_rate"]}',
-                f'color: {item["color"]}',
-                f'color_chip: {item["color_chip"]}',
-                f'material: {item["material"]}',
-                f'details: {item["details"]}',
-                f'color_classification_url: {item["color_classification_url"]}',
-                f'front_images_url: {item["front_images_url"]}',
-                f'product_detail_url: {item["product_detail_url"]}',
+                item["category"],
+                item["product_name"],
+                item["current_price"],
+                item["regular_price"],
+                item["discount_rate"],
+                item["color"],
+                item["color_chip"],
+                item["material"],
+                item["details"],
+                item["color_classification_url"],
+                item["front_images_url"],
+                item["product_detail_url"],
             ])
     return filename
 
-# ✅ 메인 실행
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=False)
